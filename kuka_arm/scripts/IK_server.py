@@ -101,6 +101,8 @@ R2_3 = T2_3.extract([0,1,2],[0,1,2])
 R_0_3 = simplify(R0_1  * R1_2 * R2_3)
 R_0_3_Inv = R_0_3.inv("LU")
 
+R_3_6 = simplify(R_0_3_Inv * R_EE_corr)
+
 
 def handle_calculate_IK(req):
     rospy.loginfo("Received %s eef-poses from the plan" % len(req.poses))
@@ -131,7 +133,7 @@ def handle_calculate_IK(req):
         # Compensate for rotation discrepancy between DH parameters and Gazebo
         #
         #
-            R_EE_corr_eval =R_EE_corr.evalf(subs={alpha0: roll, alpha1:pitch, alpha2:yaw})
+            R_EE_corr_eval = R_EE_corr.evalf(subs={alpha0: roll, alpha1:pitch, alpha2:yaw})
 
         # Calculate joint angles using Geometric IK method
         #
@@ -150,8 +152,7 @@ def handle_calculate_IK(req):
             theta2 = math.pi/2-math.acos(np.clip((B*B+C*C-A*A)/(2*B*C),-1,1))-math.atan2(L,W)
             theta3 = math.pi/2-(math.acos(np.clip((A*A+C*C-B*B)/(2*A*C),-1,1))+0.036)
             
-            R_3_6 = simplify(R_0_3_Inv * R_EE_corr_eval)
-            R_3_6_eval= R_3_6.evalf(subs={q1: theta1, q2:theta2, q3:theta3})
+            R_3_6_eval = R_3_6.evalf(subs={q1: theta1, q2:theta2, q3:theta3})
     
             theta5 = math.acos(R_3_6_eval[1,2])
             theta4 = math.acos(-R_3_6_eval[0,2]/math.sin(theta5))
