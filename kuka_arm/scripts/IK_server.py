@@ -134,7 +134,7 @@ def handle_calculate_IK(req):
         # Compensate for rotation discrepancy between DH parameters and Gazebo
         #
         #
-            R_EE_corr_eval = R_EE_corr.evalf(subs={alpha0: roll, alpha1:pitch, alpha2:yaw})
+            R_EE_corr_eval = R_EE_corr.evalf(subs={beta0: roll, beta1:pitch, beta2:yaw})
 
         # Calculate joint angles using Geometric IK method
         #
@@ -147,18 +147,20 @@ def handle_calculate_IK(req):
             
             A = math.sqrt(math.pow(1.5,2)+ math.pow(-0.054,2))
             B = math.sqrt(math.pow(L,2)+math.pow(W,2))
-            C = .25
+            C = 1.25
+            
+            angle_a = math.acos(np.clip((B*B+C*C-A*A)/(2*B*C),-1,1))
+            angle_b = math.acos(np.clip((A*A+C*C-B*B)/(2*A*C),-1,1))
             
             theta1 = math.atan2(WC_location_eval[1],WC_location_eval[0])
-            theta2 = math.pi/2-math.acos(np.clip((B*B+C*C-A*A)/(2*B*C),-1,1))-math.atan2(L,W)
-            theta3 = math.pi/2-(math.acos(np.clip((A*A+C*C-B*B)/(2*A*C),-1,1))+0.036)
+            theta2 = math.pi/2-angle_a-math.atan2(L,W)
+            theta3 = math.pi/2-(angle_b+0.036)
             
             R_3_6_eval = R_3_6.evalf(subs={beta0:roll, beta1:pitch, beta2: yaw,q1: theta1, q2:theta2, q3:theta3})
     
             theta5 = math.acos(R_3_6_eval[1,2])
             theta4 = math.acos(-R_3_6_eval[0,2]/math.sin(theta5))
             theta6 = math.acos(R_3_6_eval[1,0]/math.sin(theta5))
-        
             ###
         
             # Populate response for the IK request
