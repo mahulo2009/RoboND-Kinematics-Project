@@ -27,6 +27,7 @@ q1, q2, q3, q4, q5, q6, q7 = symbols('q1:8')
 d1, d2, d3, d4, d5, d6, d7 = symbols('d1:8')
 a0, a1, a2, a3, a4, a5 ,a6 = symbols('a0:7')
 alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols('alpha0:7')
+beta0, beta1, beta2 = symbols('beta0:3')
 
 # Create Modified DH parameters
 #
@@ -77,15 +78,15 @@ R_corr = simplify(R_z * R_y)
 
 
 R_EEx = Matrix([[ 1,           0,   0],
-      [ 0,      cos(alpha0),    -sin(alpha0)],
-      [ 0,      sin(alpha0),    cos(alpha0)]])
+      [ 0,      cos(beta0),    -sin(beta0)],
+      [ 0,      sin(beta0),    cos(beta0)]])
 
-R_EEy = Matrix([[ cos(alpha1),        0,  sin(alpha1)],
+R_EEy = Matrix([[ cos(beta1),        0,  sin(beta1)],
       [       0,        1,        0],
-      [-sin(alpha1),        0,  cos(alpha1)]])
+      [-sin(beta1),        0,  cos(beta1)]])
 
-R_EEz = Matrix([[ cos(alpha2), -sin(alpha2),        0],
-      [ sin(alpha2),  cos(alpha2),        0],
+R_EEz = Matrix([[ cos(beta2), -sin(beta2),        0],
+      [ sin(beta2),  cos(beta2),        0],
       [ 0,              0,        1]])
 
 R_EE_corr = simplify ( R_EEz * R_EEy * R_EEx * R_corr )
@@ -152,7 +153,7 @@ def handle_calculate_IK(req):
             theta2 = math.pi/2-math.acos(np.clip((B*B+C*C-A*A)/(2*B*C),-1,1))-math.atan2(L,W)
             theta3 = math.pi/2-(math.acos(np.clip((A*A+C*C-B*B)/(2*A*C),-1,1))+0.036)
             
-            R_3_6_eval = R_3_6.evalf(subs={q1: theta1, q2:theta2, q3:theta3})
+            R_3_6_eval = R_3_6.evalf(subs={beta0:roll, beta1:pitch, beta2: yaw,q1: theta1, q2:theta2, q3:theta3})
     
             theta5 = math.acos(R_3_6_eval[1,2])
             theta4 = math.acos(-R_3_6_eval[0,2]/math.sin(theta5))
@@ -162,8 +163,8 @@ def handle_calculate_IK(req):
         
             # Populate response for the IK request
             # In the next line replace theta1,theta2...,theta6 by your joint angle variables
-        joint_trajectory_point.positions = [theta1, theta2, theta3, theta4, theta5, theta6]
-        joint_trajectory_list.append(joint_trajectory_point)
+            joint_trajectory_point.positions = [theta1, theta2, theta3, theta4, theta5, theta6]
+            joint_trajectory_list.append(joint_trajectory_point)
 
         rospy.loginfo("length of Joint Trajectory List: %s" % len(joint_trajectory_list))
         return CalculateIKResponse(joint_trajectory_list)
