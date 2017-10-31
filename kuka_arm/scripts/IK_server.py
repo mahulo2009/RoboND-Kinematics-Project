@@ -12,6 +12,8 @@
 # import modules
 import rospy
 import tf
+import numpy as np
+import math
 from kuka_arm.srv import *
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from geometry_msgs.msg import Pose
@@ -141,7 +143,8 @@ def handle_calculate_IK(req):
         # Calculate joint angles using Geometric IK method
         #
         #
-            WC_location_eval = EE_Position  - (d67) * R_EE_corr_eval *  Matrix([[0],[0],[1]])
+            EE_Position = Matrix ( [[px],[py],[pz]] ) 
+	    WC_location_eval = EE_Position  - (0.303) * R_EE_corr_eval *  Matrix([[0],[0],[1]])
             
             L=WC_location_eval[2]-0.75
             W=math.sqrt(math.pow(WC_location_eval[0],2)+math.pow(WC_location_eval[1],2))-0.35
@@ -152,7 +155,7 @@ def handle_calculate_IK(req):
             
             theta1 = math.atan2(WC_location_eval[1],WC_location_eval[0])
             theta2 = math.pi/2-math.acos(np.clip((B*B+C*C-A*A)/(2*B*C),-1,1))-math.atan2(L,W)
-            theta3 = math.pi/2-(b+0.036)
+            theta3 = math.pi/2-(math.acos(np.clip((A*A+C*C-B*B)/(2*A*C),-1,1))+0.036)
             
             R_3_6 = simplify(R_0_3_Inv * R_EE_corr_eval)
             R_3_6_eval= R_3_6.evalf(subs={q1: theta1, q2:theta2, q3:theta3})
