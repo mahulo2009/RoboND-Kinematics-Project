@@ -20,6 +20,88 @@ from geometry_msgs.msg import Pose
 from mpmath import *
 from sympy import *
 
+# Create symbols
+#
+#   
+    q1, q2, q3, q4, q5, q6, q7 = symbols('q1:8')
+    d1, d2, d3, d4, d5, d6, d7 = symbols('d1:8')
+    a0, a1, a2, a3, a4, a5 ,a6 = symbols('a0:7')
+    alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols('alpha0:7')
+
+# Create Modified DH parameters
+#
+#
+    s = {
+        alpha0: 0,         a0: 0,                           d1: 0.75, 
+        alpha1: -pi/2,     a1: 0.35,        q2: q2-pi/2,    d2:0.0,  
+        alpha2: 0,         a2: 1.25,                        d3:0.0,
+        alpha3: -pi/2,     a3: -0.054,                      d4:1.5,
+        alpha4: pi/2,      a4: 0.0,                         d5:0.0,
+        alpha5: -pi/2,     a5: 0.0,                         d6:0.0,
+        alpha6: 0,         a6: 0.0,         q7:0.0,         d7:0.303
+     
+    }
+
+# Define Modified DH Transformation matrix
+#
+#
+    T0_1 = Matrix([[             cos(q1),            -sin(q1),            0,              a0],
+                   [ sin(q1)*cos(alpha0), cos(q1)*cos(alpha0), -sin(alpha0), -sin(alpha0)*d1],
+                   [ sin(q1)*sin(alpha0), cos(q1)*sin(alpha0),  cos(alpha0),  cos(alpha0)*d1],
+                   [                   0,                   0,            0,               1]])
+    T0_1 = T0_1.subs(s)
+    
+    T1_2 = Matrix([[             cos(q2),            -sin(q2),            0,              a1],
+                   [ sin(q2)*cos(alpha1), cos(q2)*cos(alpha1), -sin(alpha1), -sin(alpha1)*d2],
+                   [ sin(q2)*sin(alpha1), cos(q2)*sin(alpha1),  cos(alpha1),  cos(alpha1)*d2],
+                   [                   0,                   0,            0,               1]])
+    T1_2 = T1_2.subs(s)
+    
+    T2_3 = Matrix([[             cos(q3),            -sin(q3),            0,              a2],
+                   [ sin(q3)*cos(alpha2), cos(q3)*cos(alpha2), -sin(alpha2), -sin(alpha2)*d3],
+                   [ sin(q3)*sin(alpha2), cos(q3)*sin(alpha2),  cos(alpha2),  cos(alpha2)*d3],
+                   [                   0,                   0,            0,               1]])
+    T2_3 = T2_3.subs(s)
+
+
+R_z = Matrix([[ cos(np.pi),     -sin(np.pi),    0],
+       [sin(np.pi),     cos(np.pi),     0],
+       [0,              0,              1],
+       ])
+
+R_y = Matrix([[ cos(-np.pi/2),  0,              sin(-np.pi/2)],
+      [ 0,              1,              0,],
+      [ -sin(-np.pi/2), 0,              cos(-np.pi/2)],
+      ])
+R_corr = simplify(R_z * R_y)
+
+
+R_EEx = Matrix([[ 1,           0,   0],
+      [ 0,      cos(alpha0),    -sin(alpha0)],
+      [ 0,      sin(alpha0),    cos(alpha0)]])
+
+R_EEy = Matrix([[ cos(alpha1),        0,  sin(alpha1)],
+      [       0,        1,        0],
+      [-sin(alpha1),        0,  cos(alpha1)]])
+
+R_EEz = Matrix([[ cos(alpha2), -sin(alpha2),        0],
+      [ sin(alpha2),  cos(alpha2),        0],
+      [ 0,              0,        1]])
+
+R_EE_corr = simplify ( R_EEz * R_EEy * R_EEx * R_corr )
+
+
+# Extract rotation matrices from the transformation matrices
+#
+#
+R0_1 = T0_1.extract([0,1,2],[0,1,2])
+R1_2 = T1_2.extract([0,1,2],[0,1,2])
+R2_3 = T2_3.extract([0,1,2],[0,1,2])
+
+R_0_3 = simplify(R0_1  * R1_2 * R2_3)
+R_0_3_Inv = R_0_3.inv("LU")
+        
+
 
 def handle_calculate_IK(req):
     rospy.loginfo("Received %s eef-poses from the plan" % len(req.poses))
@@ -27,94 +109,6 @@ def handle_calculate_IK(req):
         print "No valid poses received"
         return -1
     else:
-        
-        ### Your FK code here
-    # Create symbols
-    #
-    #   
-        q1, q2, q3, q4, q5, q6, q7 = symbols('q1:8')
-        d1, d2, d3, d4, d5, d6, d7 = symbols('d1:8')
-        a0, a1, a2, a3, a4, a5 ,a6 = symbols('a0:7')
-        alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols('alpha0:7')
-
-    # Create Modified DH parameters
-    #
-    #
-        s = {
-            alpha0: 0,         a0: 0,                           d1: 0.75, 
-            alpha1: -pi/2,     a1: 0.35,        q2: q2-pi/2,    d2:0.0,  
-            alpha2: 0,         a2: 1.25,                        d3:0.0,
-            alpha3: -pi/2,     a3: -0.054,                      d4:1.5,
-            alpha4: pi/2,      a4: 0.0,                         d5:0.0,
-            alpha5: -pi/2,     a5: 0.0,                         d6:0.0,
-            alpha6: 0,         a6: 0.0,         q7:0.0,         d7:0.303
-         
-        }
-    # Define Modified DH Transformation matrix
-    #
-    #
-        T0_1 = Matrix([[             cos(q1),            -sin(q1),            0,              a0],
-                       [ sin(q1)*cos(alpha0), cos(q1)*cos(alpha0), -sin(alpha0), -sin(alpha0)*d1],
-                       [ sin(q1)*sin(alpha0), cos(q1)*sin(alpha0),  cos(alpha0),  cos(alpha0)*d1],
-                       [                   0,                   0,            0,               1]])
-        T0_1 = T0_1.subs(s)
-        
-        T1_2 = Matrix([[             cos(q2),            -sin(q2),            0,              a1],
-                       [ sin(q2)*cos(alpha1), cos(q2)*cos(alpha1), -sin(alpha1), -sin(alpha1)*d2],
-                       [ sin(q2)*sin(alpha1), cos(q2)*sin(alpha1),  cos(alpha1),  cos(alpha1)*d2],
-                       [                   0,                   0,            0,               1]])
-        T1_2 = T1_2.subs(s)
-        
-        T2_3 = Matrix([[             cos(q3),            -sin(q3),            0,              a2],
-                       [ sin(q3)*cos(alpha2), cos(q3)*cos(alpha2), -sin(alpha2), -sin(alpha2)*d3],
-                       [ sin(q3)*sin(alpha2), cos(q3)*sin(alpha2),  cos(alpha2),  cos(alpha2)*d3],
-                       [                   0,                   0,            0,               1]])
-        T2_3 = T2_3.subs(s)
-        
-    # Create individual transformation matrices
-    #
-    #
-        R_z = Matrix([[ cos(np.pi),     -sin(np.pi),    0],
-               [sin(np.pi),     cos(np.pi),     0],
-               [0,              0,              1],
-               ])
-
-        R_y = Matrix([[ cos(-np.pi/2),  0,              sin(-np.pi/2)],
-              [ 0,              1,              0,],
-              [ -sin(-np.pi/2), 0,              cos(-np.pi/2)],
-              ])
-
-        R_corr = simplify(R_z * R_y)
-
-        R_EEx = Matrix([[ 1,           0,   0],
-              [ 0,      cos(alpha0),    -sin(alpha0)],
-              [ 0,      sin(alpha0),    cos(alpha0)]])
-
-        R_EEy = Matrix([[ cos(alpha1),        0,  sin(alpha1)],
-              [       0,        1,        0],
-              [-sin(alpha1),        0,  cos(alpha1)]])
-
-        R_EEz = Matrix([[ cos(alpha2), -sin(alpha2),        0],
-              [ sin(alpha2),  cos(alpha2),        0],
-              [ 0,              0,        1]])
-
-        R_EE_corr = simplify ( R_EEz * R_EEy * R_EEx * R_corr )
-        
-
-
-    
-    # Extract rotation matrices from the transformation matrices
-    #
-    #
-        R0_1 = T0_1.extract([0,1,2],[0,1,2])
-        R1_2 = T1_2.extract([0,1,2],[0,1,2])
-        R2_3 = T2_3.extract([0,1,2],[0,1,2])
-    
-        R_0_3 = simplify(R0_1  * R1_2 * R2_3)
-        R_0_3_Inv = R_0_3.inv("LU")
-        
-
-        ###
 
         # Initialize service response
         joint_trajectory_list = []
@@ -144,7 +138,7 @@ def handle_calculate_IK(req):
         #
         #
             EE_Position = Matrix ( [[px],[py],[pz]] ) 
-	    WC_location_eval = EE_Position  - (0.303) * R_EE_corr_eval *  Matrix([[0],[0],[1]])
+            WC_location_eval = EE_Position  - (0.303) * R_EE_corr_eval *  Matrix([[0],[0],[1]])
             
             L=WC_location_eval[2]-0.75
             W=math.sqrt(math.pow(WC_location_eval[0],2)+math.pow(WC_location_eval[1],2))-0.35
