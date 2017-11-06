@@ -16,11 +16,30 @@
 ### Forward Kinematic
 
 #### Overview KR210 Forward Kinematic
+
+In this section we are going to do the forward kinematic of the Kuka KR210 serial manipulator. The KR210 is a robot arm with six degrees of freedom. The following picture show the schematic of the arm in its zero configuration: when all the joint variables are equal to zero.
+
 ![alt text][image1]
-#### KR210 Forward Kinematic reference frames
+
+#### KR210 Forward Kinematic DH Parameters
+
+To construct the DH parameter table for the manipulator the following steps must be made:
+
+* Labeling the joints from 1 to n.
+* Labeling each link from 0 to n.
+* Draw lines defining each joint axis.
+* Define directions for the positive Z axes.
+* Define directions for the X axes as the common normals between Zi-1 and Zi axis.
+* For skew axes, along the normal between Zi an Zi-1, and pointing from i to i+1
+* For intersecting axes, normal to the plane containing Zi and Zi+1
+* For parallel or coincident axes, the way to make other DH Parameters equal to zero.
+* Draw the offset a's and d's between links.
+ 
 ![alt text][image2]
-#### KR210 Forward Kinematic DH parameters
-![alt text][image3]
+
+The DH Parameter table is filled up using the Assignment Algorithm.
+
+[alt text][image3]
 
 Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 --- | --- | --- | --- | ---
@@ -32,9 +51,13 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 5->6 | -pi/2 | 0 | q6 | 0
 6->EE | 0 | 0 | 0 | d7
 
+The DH Parameter table is filled up using the Assignment Algorithm.
 
-#### KR210 Forward Kinematic modified DH parameters
+
+
 ![alt text][image4]
+
+
 
 Joint Name | Parent Link | Child Link | x(m) | y(m) | z(m)
 --- | --- | --- | --- | --- | ---
@@ -47,12 +70,12 @@ joint_5 | link_5 | link_6 | 0.193 | 0 | 0
 gripper_joint | link_6 | gripper_link | 0.11 | 0 | 0
 
 
-d1 =  0.330 + 0.42 = 0.75
-a1 =  0.35
-a2 =  1.25
-a3 = -0.0054
-d4 =  0.960 + 0.54 = 1.5
-d7 =  0.193 + 0.11 = 0.303
+* d1 =  0.330 + 0.42 = 0.75
+* a1 =  0.35
+* a2 =  1.25
+* a3 = -0.0054
+* d4 =  0.960 + 0.54 = 1.5
+* d7 =  0.193 + 0.11 = 0.303
 
 
 Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
