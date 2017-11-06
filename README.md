@@ -104,6 +104,14 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 
 #### Homogeneous transform
 
+('T0_1->', Matrix([
+[cos(q1), -sin(q1), 0,    0],
+[sin(q1),  cos(q1), 0,    0],
+[      0,        0, 1, 0.75],
+[      0,        0, 0,    1]]))
+
+
+
 
 
 ### Inverse Kinematic
