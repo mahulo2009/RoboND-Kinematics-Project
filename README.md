@@ -30,9 +30,9 @@ To construct the DH parameter table for the manipulator the following steps must
 * Draw lines defining each joint axis.
 * Define directions for the positive Z axes.
 * Define directions for the X axes as the common normals between Zi-1 and Zi axis.
-* For skew axes, along the normal between Zi an Zi-1, and pointing from i to i+1
-* For intersecting axes, normal to the plane containing Zi and Zi+1
-* For parallel or coincident axes, the way to make other DH Parameters equal to zero.
+  * For skew axes, along the normal between Zi an Zi-1, and pointing from i to i+1
+  * For intersecting axes, normal to the plane containing Zi and Zi+1
+  * For parallel or coincident axes, the way to make other DH Parameters equal to zero.
 * Draw the offset a's and d's between links.
  
 ![alt text][image2]
