@@ -23,6 +23,7 @@ In this section we are going to do the forward kinematic of the Kuka KR210 seria
 
 #### KR210 Forward Kinematic DH Parameters
 
+
 To construct the DH parameter table for the manipulator the following steps must be made:
 
 * Labeling the joints from 1 to n.
@@ -33,13 +34,20 @@ To construct the DH parameter table for the manipulator the following steps must
   * For skew axes, along the normal between Zi an Zi-1, and pointing from i to i+1
   * For intersecting axes, normal to the plane containing Zi and Zi+1
   * For parallel or coincident axes, the way to make other DH Parameters equal to zero.
-* Draw the offset a's and d's between links.
- 
+* Define the base and end efector frame.
+
 ![alt text][image2]
 
-The DH Parameter table is filled up using the Assignment Algorithm.
+The DH Parameter table is filled up:
 
-[alt text][image3]
+* α​i−1 (twist angle) = angle between Z^​​​i−1 and Z^​i measured about X^​i−1 in a right-hand sense.
+* ai−1(link length) = distance from Z​^​i−1 to Z^​i measured along X^​i−1 where X^​i−1 is perpendicular to both Z^​i−1 to Z^​i
+* di (link offset) = signed distance from X^​​i−1 to X^​i measured along Z^​i.
+* θi (joint angle) = angle between X^​​​i−1 to X^​​​i measured about Z^​i in a right-hand sense
+
+![alt text][image3]
+
+The DH Parameter table:
 
 Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 --- | --- | --- | --- | ---
@@ -51,12 +59,7 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 5->6 | -pi/2 | 0 | q6 | 0
 6->EE | 0 | 0 | 0 | d7
 
-The DH Parameter table is filled up using the Assignment Algorithm.
-
-
-
-![alt text][image4]
-
+The URDF file contains the information to get the numerical values for a's and d's. The following table show the information extracted from this file.
 
 
 Joint Name | Parent Link | Child Link | x(m) | y(m) | z(m)
@@ -66,9 +69,18 @@ joint_2 | link_1 | link_2 | 0.35 | 0 | 0.42
 joint_3 | link_2 | link_3 | 0 | 0 | 1.25
 joint_4 | link_3 | link_4 | 0.96 | 0 | -0.054
 joint_5 | link_4 | link_5 | 0.54 | 0 | 0
-joint_5 | link_5 | link_6 | 0.193 | 0 | 0 
+joint_5 | link_5 | link_6 | 0.193 | 0 | 0
 gripper_joint | link_6 | gripper_link | 0.11 | 0 | 0
 
+In most case the joint origins in the URDF file are not consistent with the frame origins created with the DH parameter convetions nor do they have the same orientation. The following picture show the reference frames as defined in the URDF file. The difference are highlighted In red squares.
+
+* X4 is located in Joint 4 rathen than Joint 5.
+* X5 different orientation.
+* Frame gripper different orientation.
+
+![alt text][image4]
+
+Taking in consideration this difference the a's and d's can be calculated as follow:
 
 * d1 =  0.330 + 0.42 = 0.75
 * a1 =  0.35
@@ -77,6 +89,7 @@ gripper_joint | link_6 | gripper_link | 0.11 | 0 | 0
 * d4 =  0.960 + 0.54 = 1.5
 * d7 =  0.193 + 0.11 = 0.303
 
+This is the final DH parameter table.
 
 Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 --- | --- | --- | --- | ---
@@ -87,6 +100,7 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 4->5 | pi/2 | 0 | q5 | 0
 5->6 | -pi/2 | 0 | q6 | 0
 6->EE | 0 | 0 | 0 | 0.303
+
 
 #### Homogeneous transform
 
