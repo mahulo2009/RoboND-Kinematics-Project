@@ -15,9 +15,22 @@
 
 ## Forward Kinematic
 
+# Overview KR210 Forward Kinematic
 ![alt text][image1]
+# KR210 Forward Kinematic reference frames
+![alt text][image2]
+# KR210 Forward Kinematic DH parameters
+![alt text][image3]
+# KR210 Forward Kinematic modified DH parameters
+![alt text][image4]
+
+## Homogeneous transform
 
 ## Inverse Kinematic
+![alt text][image5]
+![alt text][image6]
+![alt text][image7]
+
 
 
 
