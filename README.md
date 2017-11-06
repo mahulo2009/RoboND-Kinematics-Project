@@ -54,10 +54,10 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 0->1 | 0 | 0 | d1 | q1
 1->2 | -pi/2 | a1 | 0 | q2 -pi/2
 2->3 | 0 | a2 | 0 | q3
-3->4 | -pi/2 | a3 | q4 | d4
-4->5 | pi/2 | 0 | q5 | 0
-5->6 | -pi/2 | 0 | q6 | 0
-6->EE | 0 | 0 | 0 | d7
+3->4 | -pi/2 | a3 | d4 | q4
+4->5 | pi/2 | 0 | 0 | q5
+5->6 | -pi/2 | 0 | 0 | q6
+6->EE | 0 | 0 | d7 | 0
 
 The URDF file contains the information to get the numerical values for a's and d's. The following table show the information extracted from this file.
 
