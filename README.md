@@ -72,7 +72,7 @@ joint_5 | link_4 | link_5 | 0.54 | 0 | 0
 joint_5 | link_5 | link_6 | 0.193 | 0 | 0
 gripper_joint | link_6 | gripper_link | 0.11 | 0 | 0
 
-In most case the joint origins in the URDF file are not consistent with the frame origins created with the DH parameter convetions nor do they have the same orientation. The following picture show the reference frames as defined in the URDF file. The difference are highlighted In red squares.
+In most case the joint origins in the URDF file are not consistent with the frame origins created with the DH parameter convetions nor do they have the same orientation. The following picture show the reference frames as defined in the URDF file. The difference are highlighted in red squares.
 
 * X4 is located in Joint 4 rathen than Joint 5.
 * X5 different orientation.
@@ -80,7 +80,7 @@ In most case the joint origins in the URDF file are not consistent with the fram
 
 ![alt text][image4]
 
-Taking in consideration this difference the a's and d's can be calculated as follow:
+Taking in consideration these differences the a's and d's can be calculated as follow:
 
 * d1 =  0.330 + 0.42 = 0.75
 * a1 =  0.35
@@ -103,6 +103,8 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 
 
 #### Homogeneous transform
+
+
 
 ### Inverse Kinematic
 
