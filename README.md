@@ -284,7 +284,7 @@ theta6 = atan(-R_3_6[1,1],R_3_6[1,0])
 
 ## Project Implementation
 
-This section will explain the IK_server code in detail
+This section will explain the IK_server code in detail. All the heavy work is done outside the main loop, in order to improve the perfomance.
 
 
 A function to create the transform between adjacent links:
@@ -381,6 +381,8 @@ R2_3 = T2_3.extract([0,1,2],[0,1,2])
 R_0_3 = R0_1  * R1_2 * R2_3
 ```
 
+Once the end-effector Pose is extracted from the TF, the matrix rotation of the end-effector is evaluated. 
+
 ```python
         # Extract end-effector position and orientation from request
         # px,py,pz = end-effector position
@@ -399,6 +401,9 @@ R_0_3 = R0_1  * R1_2 * R2_3
             R_EE_corr_eval = R_EE_corr.evalf(subs={beta0: roll, beta1:pitch, beta2:yaw})
 
 ```
+
+The position of the End Effector in coordinates of the base reference frame and the first three joint angles are calculated.
+
 
 ```python
         # Calculate joint angles using Geometric IK method
@@ -423,6 +428,8 @@ R_0_3 = R0_1  * R1_2 * R2_3
             theta2 = math.pi/2.0-angle_a-math.atan2(L,W)
             theta3 = math.pi/2.0-(angle_b+0.036)
 ```
+
+The last three joint angles are calculated.
 
 ```python
             # Calculate the rotation matrix from frame 0 to frame 3
