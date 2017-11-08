@@ -10,6 +10,7 @@
 [image6]: ./misc_images/Kuka_arm_006.png
 [image7]: ./misc_images/Kuka_arm_007.png
 [image8]: ./misc_images/math-001.png
+[image9]: ./misc_images/math-002.png
 
 
 ## Kinematic Analysis
@@ -256,6 +257,28 @@ alfa = acos((A²+C²-B²)/(2*A*C))
 From the image it can see that:
 
 beta = atan(a3,d4)
+
+Once the first three joint variables are known, calculate the Rotation Matrix from frame 3 to frame 6 using the following formula:
+
+![alt text][image9]
+
+The symbolic formula for the rotation matrix from frame three to frame six is equal to:
+
+('R_3_6->', Matrix([
+[-sin(q4)*sin(q6) + cos(q4)*cos(q5)*cos(q6), -sin(q4)*cos(q6) - sin(q6)*cos(q4)*cos(q5), -sin(q5)*cos(q4)],  
+[                           sin(q5)*cos(q6),                           -sin(q5)*sin(q6),          cos(q5)],  
+[-sin(q4)*cos(q5)*cos(q6) - sin(q6)*cos(q4),  sin(q4)*sin(q6)*cos(q5) - cos(q4)*cos(q6),  sin(q4)*sin(q5)]]))  
+
+R_3_6[2,2]/R_3_6[0,2]= sin(q4)*sin(q5)/-sin(q5)*cos(q4)=-sin(q4)/cos(q4) 
+theta4 = atan(R_3_6[2,2],-R_3_6[0,2]
+
+R_3_6[0,2]² + R_3_6[2,2]² = (-sin(q5)*cos(q4))² + (sin(q4)*sin(q5))² = sin(q5)² * ( sin(q4)² + cos(q4) ² ) = sin(q5)² 
+R_3_6[1,2] = cos(q5)
+theta5 = atan( sqrt (  R_3_6[0,2]² + R_3_6[2,2]² ) , R_3_6[1,2] )
+
+
+R_3_6[1,1]/R_3_6[1,0]= -sin(q5)*sin(q6) / sin(q5)*cos(q6) = -sin(q6)/cos(q6) 
+theta6 = atan(-R_3_6[1,1],R_3_6[1,0])
 
 
 
