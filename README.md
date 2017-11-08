@@ -9,6 +9,7 @@
 [image5]: ./misc_images/Kuka_arm_005.png
 [image6]: ./misc_images/Kuka_arm_006.png
 [image7]: ./misc_images/Kuka_arm_007.png
+[image8]: ./misc_images/math-001.png
 
 
 ## Kinematic Analysis
@@ -28,7 +29,7 @@ To construct the DH parameter table for the manipulator the following steps must
 
 * Labeling the joints from 1 to n.
 * Labeling each link from 0 to n.
-* Draw lines defining each joint axis.
+* Draw lines defining each joint axes.
 * Define directions for the positive Z axes.
 * Define directions for the X axes as the common normals between Zi-1 and Zi axis.
   * For skew axes, along the normal between Zi an Zi-1, and pointing from i to i+1
@@ -59,7 +60,7 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 5->6 | -pi/2 | 0 | 0 | q6
 6->EE | 0 | 0 | d7 | 0
 
-The URDF file contains the information to get the numerical values for a's and d's. The following table show the information extracted from this file.
+The URDF file contains the information to get the numerical values for a's and d's. The following table shows the information extracted from this file.
 
 
 Joint Name | Parent Link | Child Link | x(m) | y(m) | z(m)
@@ -172,7 +173,52 @@ From frame 0 to frame gripper (making the rotation correction of the gripper fra
 
 ### Inverse Kinematic
 
-#### Position: Wrist center location
+The last three joints of the Kuka arm are revolute and theis joint axes intersect at a single point. The joint_5 is the wrist center, the common intersection point. This allows us to kinematically decouple the IK problem into Inverse Position and Inverse Orientation problem. 
+
+#### Inverse Position
+
+Starting from the pose of End Efector: position and orientation; the location of the wrist can be found :
+![alt text][image8]
+
+In this case, d equals 0.303, the distance from joint 5 to the final effector. The Rotation Matrix of frame 0 to frame EE can be found using the roll, pitch and yaw of the EE. Finally, because the orientation of the EE differs from that calculated with the DH parameters, it is necessary to apply a rotation matrix that corrects this difference.
+
+
+Matrix to correct orientation of the EE:
+
+R_z = Matrix([[ cos(np.pi),    -sin(np.pi),    0],  
+              [sin(np.pi),     cos(np.pi),     0],  
+              [0,              0,              1],])  
+
+R_y = Matrix([[ cos(-np.pi/2.),  0,  sin(-np.pi/2.)],  
+              [ 0,               1,              0,],  
+              [ -sin(-np.pi/2.), 0,  cos(-np.pi/2.)],])  
+R_corr = R_z * R_y
+
+
+Orientation Matrix of the EE based on roll, pitch and yaw:
+
+R_EEx = Matrix([[ 1,         0,           0],  
+                [ 0, cos(roll),  -sin(roll)],  
+                [ 0, sin(roll),  cos(roll)]])  
+
+R_EEy = Matrix([[ cos(pitch),  0,  sin(pitch)],  
+                [          0,  1,           0],  
+                [-sin(pitch),  0,  cos(pitch)]])  
+
+R_EEz = Matrix([[ cos(yaw), -sin(yaw),        0],  
+                [ sin(yaw),  cos(yaw),        0],  
+                [ 0,                0,        1]])  
+
+R_EE_corr = R_EEz * R_EEy * R_EEx * R_corr 
+
+Location of the WC:
+
+WC_location = EE_Position - (0.303) * R_EE_corr_eval[:,2]
+
+
+
+
+
 ![alt text][image5]
 ![alt text][image6]
 ![alt text][image7]
