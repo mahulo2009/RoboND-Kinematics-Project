@@ -14,6 +14,8 @@
 [image10]: ./misc_images/math-003.png
 [image11]: ./misc_images/math-004.png
 [image12]: ./misc_images/math-005.png
+[image13]: ./misc_images/gazebo-001.png
+[image14]: ./misc_images/gazebo-002.png
 
 
 ## Kinematic Analysis
@@ -304,8 +306,8 @@ Matrix to correct the gripper reference orientation as defined in the URDF files
 # Orientation correction matrix
 #
 #
-R_z = Rot_Z_matrix(np.pi)
-R_y = Rot_Y_matrix(-np.pi/2.0)
+R_z = Rot_Z_matrix(pi)
+R_y = Rot_Y_matrix(-pi/2.0)
 R_corr = R_z * R_y
 ```
  
@@ -399,3 +401,8 @@ The last three joint angles are calculated.
             theta6 = math.atan2(-R_3_6[1,1],R_3_6[1,0])
 
 ```
+
+Finally two images to see the result:
+
+![alt text][image13]
+![alt text][image14]
