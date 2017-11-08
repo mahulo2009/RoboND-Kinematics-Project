@@ -215,13 +215,48 @@ Location of the WC:
 
 WC_location = EE_Position - (0.303) * R_EE_corr_eval[:,2]
 
+#### Orientation
 
-
-
+The next step is to find the joint variables, q1, q2, and q3, such that the WC has the coordinates calculated previously. The following image shows the way to do it.
 
 ![alt text][image5]
+
+theta1 = math.atan2(WC_y,WC_x)
+
 ![alt text][image6]
+
+theta2 =  pi/2 - alfa - beta
+
+To calculate alfa the cosine law is used.
+
+A² =   B² + C² - 2*B*C*cos(alfa)
+alfa = acos((B²+C²-A²)/(2*B*C))
+
+From the image it can see that:
+
+B = sqrt ( W² + L² )
+W = sqrt ( WC_x² + WC_y² ) - a1
+L = Wc_z - d1
+
+C = a2
+A = sqrt ( d4² + a3² )
+
+beta = atan(L,W)
+
+
 ![alt text][image7]
-#### Orientation
+
+theta3 = pi/2 - alfa - beta
+
+To calculate alfa the cosine law is used.
+
+B² =   A² + C² - 2*A*C*cos(alfa)
+alfa = acos((A²+C²-B²)/(2*A*C))
+
+From the image it can see that:
+
+beta = atan(a3,d4)
+
+
 
 ## Project Implementation
