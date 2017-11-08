@@ -12,7 +12,6 @@
 # import modules
 import rospy
 import tf
-import numpy as np
 import math
 from kuka_arm.srv import *
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
@@ -90,8 +89,8 @@ T0_7 = T0_1 * T1_2 * T2_3 * T3_4 * T4_5 * T5_6 * T6_7
 # Orientation correction matrix
 #
 #
-R_z = Rot_Z_matrix(np.pi)
-R_y = Rot_Y_matrix(-np.pi/2.0)
+R_z = Rot_Z_matrix(pi)
+R_y = Rot_Y_matrix(-pi/2.0)
 R_corr = R_z * R_y
 
 # Orientation matrix: roll, pitch and yaw

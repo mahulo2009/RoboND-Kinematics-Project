@@ -1,7 +1,7 @@
 from sympy import symbols, cos, sin, pi, simplify
 from sympy.matrices import Matrix
 
-import numpy as np
+
 
 
 q1, q2, q3, q4, q5, q6, q7 = symbols('q1:8')
@@ -66,20 +66,21 @@ T6_7 = Matrix([[             cos(q7),            -sin(q7),            0,        
 T6_7 = T6_7.subs(s)
 
 # Rotation to have the same orientation than rviz
-R_z = Matrix([[ cos(np.pi),     -sin(np.pi),    0,  0],
-               [sin(np.pi),     cos(np.pi),     0,  0],
+R_z = Matrix([[ cos(pi),     -sin(pi),    0,  0],
+               [sin(pi),     cos(pi),     0,  0],
                [0,              0,              1,  0],
                [0,              0,              0,  1]])
 
-R_y = Matrix([[ cos(-np.pi/2),  0,              sin(-np.pi/2),   0],
+R_y = Matrix([[ cos(-pi/2),  0,              sin(-pi/2),   0],
               [ 0,              1,              0,               0],
-              [ -sin(-np.pi/2), 0,              cos(-np.pi/2),   0],
+              [ -sin(-pi/2), 0,              cos(-pi/2),   0],
               [ 0,              0,              0,               1]])
 
 R_corr = simplify(R_z * R_y)
 
 
 # Intermediate transformations
+T0_1 = simplify( T0_1 ) 
 T0_2 = simplify( T0_1 * T1_2 )
 T0_3 = simplify( T0_2 * T2_3 )
 T0_4 = simplify( T0_3 * T3_4 )
@@ -98,16 +99,7 @@ print("T4_5->",T4_5)
 print("T5_6->",T5_6)
 print("T6_7->",T6_7)
 
-
-
-#print("T0_1->",(T0_1*P_0_0).evalf(subs={q1: q1_in, q2:q2_in, q3:q3_in, q4:q4_in, q5:q5_in, q6:q6_in}))
-#print("T0_2->",(T0_2*P_0_0).evalf(subs={q1: q1_in, q2:q2_in, q3:q3_in, q4:q4_in, q5:q5_in, q6:q6_in}))
-#print("T0_3->",(T0_3*P_0_0).evalf(subs={q1: q1_in, q2:q2_in, q3:q3_in, q4:q4_in, q5:q5_in, q6:q6_in}))
-#print("T0_4->",(T0_4*P_0_0).evalf(subs={q1: q1_in, q2:q2_in, q3:q3_in, q4:q4_in, q5:q5_in, q6:q6_in}))
-#print("T0_5->",(T0_5*P_0_0).evalf(subs={q1: q1_in, q2:q2_in, q3:q3_in, q4:q4_in, q5:q5_in, q6:q6_in}))
-#print("T0_6->",(T0_6*P_0_0).evalf(subs={q1: q1_in, q2:q2_in, q3:q3_in, q4:q4_in, q5:q5_in, q6:q6_in}))
-#print("T0_G->",(T0_G*P_0_0).evalf(subs={q1: q1_in, q2:q2_in, q3:q3_in, q4:q4_in, q5:q5_in, q6:q6_in}))
-#print("T_total->",(T_total * P_0_0).evalf(subs={q1: q1_in, q2:q2_in, q3:q3_in, q4:q4_in, q5:q5_in, q6:q6_in}))
+print("T_total->",T_total.evalf())
 
 
 
