@@ -287,6 +287,8 @@ theta6 = atan(-R_3_6[1,1],R_3_6[1,0])
 This section will explain the IK_server code in detail
 
 
+A function to create the transform between adjacent links:
+
 ```python
 
 def DH_matrix (alpha,a,q,d):
@@ -297,6 +299,8 @@ def DH_matrix (alpha,a,q,d):
     T = T.subs(s)
     return T
 ```
+
+Functions to create the rotation matrix x, y and z axes:
 
 ```python
 def Rot_X_matrix (alpha):
@@ -318,6 +322,9 @@ def Rot_Z_matrix (alpha):
     return Rz
 ```
 
+The individual transform matrix between adjacents links and the transform from base like to the End Efector.
+
+
 ```python
 # Individual Transformation matrix
 #
@@ -336,6 +343,7 @@ T6_7 = DH_matrix(alpha6,a6,q7,d7)
 T0_7 = T0_1 * T1_2 * T2_3 * T3_4 * T4_5 * T5_6 * T6_7
 ```
 
+Matrix to correct the gripper reference orientation as defined in the URDF files versus de DH parameters.
 
 ```python
 # Orientation correction matrix
@@ -345,6 +353,8 @@ R_z = Rot_Z_matrix(np.pi)
 R_y = Rot_Y_matrix(-np.pi/2.0)
 R_corr = R_z * R_y
 ```
+ 
+Orientation matrix calculate from the roll, pitch and yaw values. I will be evaluated for every end-effector pose.
 
 ```python
 # Orientation matrix: roll, pitch and yaw
@@ -354,7 +364,11 @@ beta0, beta1, beta2 = symbols('beta0:3')
 R_EEx = Rot_X_matrix(beta0)
 R_EEy = Rot_Y_matrix(beta1)
 R_EEz = Rot_Z_matrix(beta2)
+
+R_EE_corr = R_EEz * R_EEy * R_EEx * R_corr 
 ```
+Symbolic Orientation matrix from  reference frame 0 to reference frame 3 (WC).
+
 
 ```python
 # Orientation matrix from frame 0 to 3
