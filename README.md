@@ -270,15 +270,15 @@ The symbolic formula for the rotation matrix from frame three to frame six is eq
 [-sin(q4)*cos(q5)*cos(q6) - sin(q6)*cos(q4),  sin(q4)*sin(q6)*cos(q5) - cos(q4)*cos(q6),  sin(q4)*sin(q5)]]))  
 
 R_3_6[2,2]/R_3_6[0,2]= sin(q4)*sin(q5)/-sin(q5)*cos(q4)=-sin(q4)/cos(q4) 
-theta4 = atan(R_3_6[2,2],-R_3_6[0,2]
+theta4 = atan(R_3_6[2,2],-R_3_6[0,2] 
 
-R_3_6[0,2]² + R_3_6[2,2]² = (-sin(q5)*cos(q4))² + (sin(q4)*sin(q5))² = sin(q5)² * ( sin(q4)² + cos(q4) ² ) = sin(q5)² 
-R_3_6[1,2] = cos(q5)
-theta5 = atan( sqrt (  R_3_6[0,2]² + R_3_6[2,2]² ) , R_3_6[1,2] )
+R_3_6[0,2]² + R_3_6[2,2]² = (-sin(q5)*cos(q4))² + (sin(q4)*sin(q5))² = sin(q5)² * ( sin(q4)² + cos(q4) ² ) = sin(q5)²  
+R_3_6[1,2] = cos(q5) 
+theta5 = atan( sqrt (  R_3_6[0,2]² + R_3_6[2,2]² ) , R_3_6[1,2] ) 
 
 
 R_3_6[1,1]/R_3_6[1,0]= -sin(q5)*sin(q6) / sin(q5)*cos(q6) = -sin(q6)/cos(q6) 
-theta6 = atan(-R_3_6[1,1],R_3_6[1,0])
+theta6 = atan(-R_3_6[1,1],R_3_6[1,0]) 
 
 
 
