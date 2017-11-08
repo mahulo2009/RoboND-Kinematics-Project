@@ -12,6 +12,8 @@
 [image8]: ./misc_images/math-001.png
 [image9]: ./misc_images/math-002.png
 [image10]: ./misc_images/math-003.png
+[image11]: ./misc_images/math-004.png
+[image12]: ./misc_images/math-005.png
 
 
 ## Kinematic Analysis
@@ -109,9 +111,7 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 
 The individual transform matrices about each joint using the DH table:
 
-
 ![alt text][image10]
-
 
 
 From frame 0 to frame gripper (making the rotation correction of the gripper frame):  
@@ -160,31 +160,11 @@ In this case, d equals 0.303, the distance from joint 5 to the final effector. T
 
 Matrix to correct orientation of the EE:
 
-R_z = Matrix([[ cos(np.pi),    -sin(np.pi),    0],  
-              [sin(np.pi),     cos(np.pi),     0],  
-              [0,              0,              1],])  
-
-R_y = Matrix([[ cos(-np.pi/2.),  0,  sin(-np.pi/2.)],  
-              [ 0,               1,              0,],  
-              [ -sin(-np.pi/2.), 0,  cos(-np.pi/2.)],])  
-R_corr = R_z * R_y
-
+![alt text][image11]
 
 Orientation Matrix of the EE based on roll, pitch and yaw:
 
-R_EEx = Matrix([[ 1,         0,           0],  
-                [ 0, cos(roll),  -sin(roll)],  
-                [ 0, sin(roll),  cos(roll)]])  
-
-R_EEy = Matrix([[ cos(pitch),  0,  sin(pitch)],  
-                [          0,  1,           0],  
-                [-sin(pitch),  0,  cos(pitch)]])  
-
-R_EEz = Matrix([[ cos(yaw), -sin(yaw),        0],  
-                [ sin(yaw),  cos(yaw),        0],  
-                [ 0,                0,        1]])  
-
-R_EE_corr = R_EEz * R_EEy * R_EEx * R_corr 
+![alt text][image12]
 
 Location of the WC:
 
