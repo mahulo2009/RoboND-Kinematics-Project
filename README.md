@@ -218,11 +218,11 @@ Once the first three joint variables are known, calculate the Rotation Matrix fr
 
 The symbolic formula for the rotation matrix from frame three to frame six is equal to:
 
-[ 
-[-sin(q4)*sin(q6) + cos(q4)*cos(q5)*cos(q6), -sin(q4)*cos(q6) - sin(q6)*cos(q4)*cos(q5), -sin(q5)*cos(q4)], 
-[ sin(q5)*cos(q6), -sin(q5)*sin(q6), cos(q5)], 
-[-sin(q4)*cos(q5)*cos(q6) - sin(q6)*cos(q4), sin(q4)*sin(q6)*cos(q5) - cos(q4)*cos(q6), sin(q4)*sin(q5)] 
-] 
+[  
+[-sin(q4)*sin(q6) + cos(q4)*cos(q5)*cos(q6), -sin(q4)*cos(q6) - sin(q6)*cos(q4)*cos(q5), -sin(q5)*cos(q4)],  
+[ sin(q5)*cos(q6), -sin(q5)*sin(q6), cos(q5)],  
+[-sin(q4)*cos(q5)*cos(q6) - sin(q6)*cos(q4), sin(q4)*sin(q6)*cos(q5) - cos(q4)*cos(q6), sin(q4)*sin(q5)]  
+]  
 
 R_3_6[2,2]/R_3_6[0,2]= sin(q4)*sin(q5)/-sin(q5)*cos(q4)=-sin(q4)/cos(q4) 
 theta4 = atan(R_3_6[2,2],-R_3_6[0,2] 
