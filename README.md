@@ -11,6 +11,7 @@
 [image7]: ./misc_images/Kuka_arm_007.png
 [image8]: ./misc_images/math-001.png
 [image9]: ./misc_images/math-002.png
+[image10]: ./misc_images/math-003.png
 
 
 ## Kinematic Analysis
@@ -106,61 +107,11 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 
 #### Homogeneous transform
 
-From frame 0 to frame 1:
-[  
-[cos(q1), -sin(q1), 0,    0],  
-[sin(q1),  cos(q1), 0,    0],  
-[      0,        0, 1, 0.75],  
-[      0,        0, 0,    1]  
-]  
+The individual transform matrices about each joint using the DH table:
 
-From frame 1 to frame 2:
-[  
-[sin(q2),  cos(q2), 0, 0.35],  
-[      0,        0, 1,  0.0],  
-[cos(q2), -sin(q2), 0,    0],  
-[      0,        0, 0,    1]  
-]  
 
-From frame 2 to frame 3:
-[  
-[cos(q3), -sin(q3), 0, 1.25],  
-[sin(q3),  cos(q3), 0,    0],  
-[      0,        0, 1,  0.0],  
-[      0,        0, 0,    1]  
-]  
+![alt text][image10]
 
-From frame 3 to frame 4:
-[  
-[ cos(q4), -sin(q4), 0, -0.054],  
-[       0,        0, 1,    1.5],  
-[-sin(q4), -cos(q4), 0,      0],  
-[       0,        0, 0,      1]  
-]  
-
-From frame 4 to frame 5:
-[  
-[cos(q5), -sin(q5),  0, 0.0],  
-[      0,        0, -1,   0],  
-[sin(q5),  cos(q5),  0,   0],  
-[      0,        0,  0,   1]  
-]  
-
-From frame 5 to frame 6:  
-[  
-[ cos(q6), -sin(q6), 0, 0.0],  
-[       0,        0, 1, 0.0],  
-[-sin(q6), -cos(q6), 0,   0],  
-[       0,        0, 0,   1]  
-]  
-
-From frame 6 to frame 7:  
-[  
-[1, 0, 0,   0.0],  
-[0, 1, 0,     0],  
-[0, 0, 1, 0.303],  
-[0, 0, 0,     1]  
-]  
 
 
 From frame 0 to frame gripper (making the rotation correction of the gripper frame):  
