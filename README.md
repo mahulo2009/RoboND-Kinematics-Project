@@ -24,7 +24,7 @@
 
 #### Overview KR210 Forward Kinematic
 
-In this section we are going to do the forward kinematic of the Kuka KR210 serial manipulator. The KR210 is a robot arm with six degrees of freedom. The following picture show the schematic of the arm in its zero configuration: when all the joint variables are equal to zero.
+In this section we are going to do the forward kinematic of the Kuka KR210 serial manipulator. The KR210 is a robot arm with six degrees of freedom. The following picture shows the schematic of the arm in its zero configuration: when all the joint variables are equal to zero.
 
 ![alt text][image1]
 
@@ -191,28 +191,28 @@ alfa = acos((B²+C²-A²)/(2*B*C))
 
 From the image it can see that:
 
-B = sqrt ( W² + L² )
-W = sqrt ( WC_x² + WC_y² ) - a1
-L = Wc_z - d1
+B = sqrt ( W² + L² )  
+W = sqrt ( WC_x² + WC_y² ) - a1  
+L = Wc_z - d1  
 
-C = a2
-A = sqrt ( d4² + a3² )
+C = a2  
+A = sqrt ( d4² + a3² )  
 
-beta = atan(L,W)
+beta = atan(L,W)  
 
 
 ![alt text][image7]
 
-theta3 = pi/2 - alfa - beta
+theta3 = pi/2 - alfa - beta  
 
 To calculate alfa the cosine law is used.
 
-B² =   A² + C² - 2*A*C*cos(alfa)
-alfa = acos((A²+C²-B²)/(2*A*C))
+B² =   A² + C² - 2*A*C*cos(alfa)  
+alfa = acos((A²+C²-B²)/(2*A*C))  
 
 From the image it can see that:
 
-beta = atan(a3,d4)
+beta = atan(a3,d4)  
 
 Once the first three joint variables are known, calculate the Rotation Matrix from frame 3 to frame 6 using the following formula:
 
@@ -226,17 +226,16 @@ The symbolic formula for the rotation matrix from frame three to frame six is eq
 [-sin(q4)*cos(q5)*cos(q6) - sin(q6)*cos(q4), sin(q4)*sin(q6)*cos(q5) - cos(q4)*cos(q6), sin(q4)*sin(q5)]  
 ]  
 
-R_3_6[2,2]/R_3_6[0,2]= sin(q4)*sin(q5)/-sin(q5)*cos(q4)=-sin(q4)/cos(q4) 
-theta4 = atan(R_3_6[2,2],-R_3_6[0,2] 
+R_3_6[2,2]/R_3_6[0,2]= sin(q4)*sin(q5)/-sin(q5)*cos(q4)=-sin(q4)/cos(q4)  
+theta4 = atan(R_3_6[2,2],-R_3_6[0,2]  
 
-R_3_6[0,2]² + R_3_6[2,2]² = (-sin(q5)*cos(q4))² + (sin(q4)*sin(q5))² = sin(q5)² * ( sin(q4)² + cos(q4) ² ) = sin(q5)²  
-R_3_6[1,2] = cos(q5) 
-theta5 = atan( sqrt (  R_3_6[0,2]² + R_3_6[2,2]² ) , R_3_6[1,2] ) 
+R_3_6[0,2]² + R_3_6[2,2]² = (-sin(q5)*cos(q4))² + (sin(q4)*sin(q5))² = sin(q5)² * ( sin(q4)² + cos(q4) ² ) = sin(q5)²   
+R_3_6[1,2] = cos(q5)  
+theta5 = atan( sqrt (  R_3_6[0,2]² + R_3_6[2,2]² ) , R_3_6[1,2] )  
 
 
-R_3_6[1,1]/R_3_6[1,0]= -sin(q5)*sin(q6) / sin(q5)*cos(q6) = -sin(q6)/cos(q6) 
-theta6 = atan(-R_3_6[1,1],R_3_6[1,0]) 
-
+R_3_6[1,1]/R_3_6[1,0]= -sin(q5)*sin(q6) / sin(q5)*cos(q6) = -sin(q6)/cos(q6)  
+theta6 = atan(-R_3_6[1,1],R_3_6[1,0])  
 
 
 ## Project Implementation
@@ -317,7 +316,7 @@ Orientation matrix calculate from the roll, pitch and yaw values. I will be eval
 # Orientation matrix: roll, pitch and yaw
 #
 #
-beta0, beta1, beta2 = symbols('beta0:3')    
+beta0, beta1, beta2 = symbols('beta0:3')
 R_EEx = Rot_X_matrix(beta0)
 R_EEy = Rot_Y_matrix(beta1)
 R_EEz = Rot_Z_matrix(beta2)
